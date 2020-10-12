@@ -1,0 +1,21 @@
+
+#correctProgress {
+    width: 100%;
+    background-color: grey;
+}
+
+#correctBar {
+    width: 1%;
+    height: 30px;
+    background-color: green;
+}   
+
+#myBar, #myBarIncorrect {
+    height: 15px;
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    /* outline: 1px solid black; */
+}
+
