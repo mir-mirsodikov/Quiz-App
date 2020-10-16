@@ -7,14 +7,14 @@
 "use strict";
 
 /**
- * @brief The component for the terms
+ * The component that holds the flashcards, `progress-container`, and  `wrong-card` 
  */
 Vue.component('terms-card', {
     template:
         `
         <div class="uk-grid uk-grid-small uk-height-1-1">
             <div class="uk-width-1-6 uk-margin-remove uk-padding-remove">
-                <progress-footer :correct="correct" :incorrect="incorrect" :widthCorrect="widthCorrect" :widthIncorrect="widthIncorrect"></progress-footer>
+                <progress-container :correct="correct" :incorrect="incorrect" :widthCorrect="widthCorrect" :widthIncorrect="widthIncorrect"></progress-container>
             </div>
             <div class="uk-width-expand">
                 <h1 class="uk-text-center uk-padding" style="color: white; font-family: 'Montserrat', sans-serif;">
@@ -69,6 +69,20 @@ Vue.component('terms-card', {
         }
     },
     methods: {
+        /**
+         * The function that's called on the submit of the button or on enter
+         * 
+         * Check to see if the provided answer is correct. If so, then:
+         * Change the color of the button to green, 
+         * Change the text of the button, and 
+         * Disable the text box and the button for a brief period.
+         * 
+         * Start a timeout that resets everything that needs to be reset:
+         * Variables, button text and color, enable button and text input
+         * 
+         * If the answer provided was wrong, then increase the count of the incorrect and set "wrong" to true
+         * 
+         */
         check() {
             if (this.answer == this.values[this.index].def) {
                 this.stl = "#affc41";
@@ -93,8 +107,12 @@ Vue.component('terms-card', {
                 this.wrong = true;
             }
 
-            this.$emit('progress-count');
+            //this.$emit('progress-count');
         },
+        /**
+         * Shuffle the array "values" randombly by looping through the array and swapping elements 
+         * at random. Reset varibles after the shuffle has been complete.
+         */
         shuffle() {
             for (let i = 0; i < 5; i++)
                 for (let i = 0; i < this.values.length; ++i) {
@@ -110,11 +128,17 @@ Vue.component('terms-card', {
             this.incorrect = 0;
             this.$forceUpdate();
         },
+        /**
+         * To go back to the normal array, reload the window.
+         */
         regular() {
             location.reload();
         },
+        /**
+         * Gets called from the event `continue-cards` to go from the `wrong-card` component back to the regular one. 
+         */
         continueCards() {
-            console.log(false);
+            // console.log(false);
             this.wrong = false;
             this.answer = "";
             this.widthIncorrect += 100 / this.values.length;
@@ -124,6 +148,14 @@ Vue.component('terms-card', {
     }
 });
 
+/**
+ * Component that displays when the input answer is incorrect. 
+ * Provides the term, the correct answer, and the answer that the user input. 
+ * 
+ * @param {Object} value Object that holds the term and definition
+ * @param {String} answer String that contains the value input by the user
+ *   
+ */
 Vue.component('wrong-card', {
     props: {
         value: {
@@ -158,13 +190,24 @@ Vue.component('wrong-card', {
         </div>
     `,
     methods: {
+        /**
+         * When done looking at the wrong answer, continue with the 'terms-card` component by emitting event `continue-cards`
+         */
         continueCards() {
             this.$emit('continue-cards');
         }
     }
 });
 
-Vue.component('progress-footer', {
+/**
+ * The component that holds the progress bars and number values of the correct and incorrect terms.
+ * 
+ * @param {Number} correct The number of terms that are correct
+ * @param {Number} incorrect The number of terms that are incorrect
+ * @param {Number} widthCorrect The width of the progress bar for the correct terms
+ * @param {Number} widthIncorrect The width of the progress bar for the incorrect terms
+ */
+Vue.component('progress-container', {
     props: {
         correct: {
             type: Number,
@@ -251,7 +294,7 @@ document.getElementById("style").innerHTML = style;
 // }); */
 
 
-{/* <div class="uk-width-1-2">
+/* <div class="uk-width-1-2">
                         <div class="w3-border w3-round uk-width-1-3 uk-margin-remove-bottom">
                             <div id="myBar" class="w3-blue w3-center" v-bind:style="{ width: widthCorrect }" > </div>
                         </div>
@@ -267,4 +310,4 @@ document.getElementById("style").innerHTML = style;
                             <p class="uk-margin-remove">Incorrect</p>
                             <p class="uk-align-right uk-margin-remove">{{ incorrect }}</p>
                             </div>
-                        </div> */}
+                        </div> */
