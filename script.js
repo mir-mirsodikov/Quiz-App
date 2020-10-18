@@ -7,15 +7,108 @@
 "use strict";
 
 /**
+ * Opening selector component that lets the user pick the letters to use. 
+ */
+Vue.component('opening-selection', {
+    template: 
+    `
+        <div class="uk-card uk-card-default uk-card-body uk-width-1-2 uk-margin-auto">
+            <ul uk-tab uk-switcher>
+                <li class="uk-active"><a>Hiragana</a></li>
+                <li><a>Katakana</a></li>
+            </ul>
+            <ul class="uk-switcher">
+                <li>
+                    <h3>Select sets to study</h3>
+                    <form @submit.prevent="selectSet">
+                        <fieldset class="uk-fieldset">
+                            <label><input class="uk-checkbox" id="hiragana-all"         type="checkbox" value="Hiragana All Letters" 
+                                v-model="studySets" @click="allSelected = !allSelected"> All Letters</label>        </br>
+                            <label><input class="uk-checkbox" id="hiragana-standard"    type="checkbox" value="Hiragana Standard Letters" 
+                                v-model="studySets" :disabled="allSelected"> Standard Letters</label>   </br>
+                            <label><input class="uk-checkbox" id="hiragana-constants"   type="checkbox" value="Hiragana Voiced Constants" 
+                                v-model="studySets" :disabled="allSelected"> Voiced Constants</label>   </br>
+                        </fieldset>
+                    </form>
+                </li>
+                <li>
+                    <h3>Select sets to study</h3>
+                    <form>
+                        <fieldset class="uk-fieldset">
+                            <label><input class="uk-checkbox" id="katakana-all"         type="checkbox" value="All Letters"> All Letters</label>        </br>
+                            <label><input class="uk-checkbox" id="katakana-standard"    type="checkbox"> Standard Letters</label>   </br>
+                            <label><input class="uk-checkbox" id="katakana-constants"   type="checkbox"> Voiced Constants</label>   </br>
+                        </fieldset>
+                    </form>
+                </li>
+            </ul>
+
+            <button class="uk-button uk-button-default uk-align-right" :disabled="studySets.length == 0" @click="selectSet">Submit</button>
+        </div>
+    `,
+    data() {
+        return {
+            studySets: [],
+            allSelected: false
+        }
+    },
+    methods: {
+        /**
+         * Depending on what the user has chosen, set the beginning and ending indexes for them to practice. 
+         * Emit an event that sends over the beginning and ending indexes
+         */
+        selectSet() {
+            // const checkboxes = document.getElementsByTagName("input");
+            let begin, end;
+
+            if (this.studySets.includes("Hiragana All Letters")) {
+                begin = 0;
+                end = terms.length;
+                console.log(`begin: ${begin}  end: ${end}`);
+            }
+            else if (this.studySets.includes("Hiragana Standard Letters")) {
+                begin = 0;
+                end = terms.map(e => {
+                    return e.term;
+                }).indexOf("ん");
+
+                console.log(`begin: ${begin}  end: ${end}`);
+            } 
+            else if (this.studySets.includes("Hiragana Voiced Constants")) {
+                begin = terms.map(e => {
+                    return e.term;
+                }).indexOf("が");
+
+                end = terms.map(e => {
+                    return e.term;
+                }).indexOf("ゔ") + 1;
+
+                console.log(`begin: ${begin}  end: ${end}`);
+            }
+
+            app.setsSelected = true;
+
+            this.$emit('study-sets', { begin, end });
+        }
+    }
+});
+
+/**
  * The component that holds the flashcards, `progress-container`, and  `wrong-card` 
  */
 Vue.component('terms-card', {
+    props: {
+        range: {
+            type: Object,
+            required: true
+        }
+    },
     template:
         `
-        <div class="uk-grid uk-grid-small uk-height-1-1">
-            <div class="uk-width-1-6 uk-margin-remove uk-padding-remove">
+        <div class="uk-grid uk-grid-small uk-height-1-1" >
+            <!-- <div class="uk-width-1-6 uk-margin-remove uk-padding-remove">
                 <progress-container :correct="correct" :incorrect="incorrect" :widthCorrect="widthCorrect" :widthIncorrect="widthIncorrect"></progress-container>
-            </div>
+            </div> -->
             <div class="uk-width-expand">
                 <h1 class="uk-text-center uk-padding" style="color: white; font-family: 'Montserrat', sans-serif;">
                     Quiz App
@@ -145,6 +238,9 @@ Vue.component('terms-card', {
             // this.$forceUpdate();
             ++this.index;
         }
+    },
+    mounted() {
+        this.values = this.values.splice(this.range.begin, this.range.end);
     }
 });
 
@@ -253,7 +349,14 @@ var app = new Vue({
     el: '#app',
     data: {
         title: "Quiz App",
+        setsSelected: false,
+        range: {}
         // letters: "あ い う え お か き く け こ さ し す せ そ た ち つ て と な に ぬ ね の は ひ ふ へ ほ ま み む め も ら り る れ ろ や ゆ よ わ を ん",
+    },
+    methods: {
+        selectSets(range) {
+            this.range = range;
+        }
     }
 });
 

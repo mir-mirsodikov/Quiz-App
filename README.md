@@ -27,3 +27,6 @@ Quizlet like app to practice flashcards and such.
   - [Link](https://blog.logrocket.com/the-complete-guide-to-using-localstorage-in-javascript-apps-ba44edb53a36/#:~:text=localStorage%20is%20limited%20to%205MB,code%20on%20your%20web%20page) 
 - [ ] Let the user choose the letters to practice (Hiragana or Katakana)
 - [ ] Clean up code
+- [ ] Add error checking and handling to the opening section component
+- [ ] Make the progress bars and what not cleaner
+  - Perhaps a footer

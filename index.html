@@ -19,7 +19,8 @@
 
 <body class="uk-section uk-height-1-1" style="background-color: #0C0A3E;">
     <div id="app" class="uk-height-1-1">
-            <terms-card>
+            <opening-selection v-if="!setsSelected" @study-sets="selectSets"></opening-selection>
+            <terms-card v-if="setsSelected" :range="range">
             </terms-card>
     </div>
     <script src="script.js"></script>

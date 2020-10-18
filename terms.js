@@ -1,4 +1,4 @@
-const terms = [ 
+/* const terms = [ 
 { 
     term: "あ", 
     def: "a"
@@ -184,10 +184,10 @@ const terms = [
     term: "ん",
     def: "n" 
 }
-];
+]; */
 
 
-/* const terms =  
+const terms =  
 [
     {
         "char_id": "a",
@@ -365,21 +365,6 @@ const terms = [
         "def": "mo"
     },
     {
-        "char_id": "ya",
-        "term": "や",
-        "def": "ya"
-    },
-    {
-        "char_id": "yu",
-        "term": "ゆ",
-        "def": "yu"
-    },
-    {
-        "char_id": "yo",
-        "term": "よ",
-        "def": "yo"
-    },
-    {
         "char_id": "ra",
         "term": "ら",
         "def": "ra"
@@ -405,25 +390,30 @@ const terms = [
         "def": "ro"
     },
     {
+        "char_id": "ya",
+        "term": "や",
+        "def": "ya"
+    },
+    {
+        "char_id": "yu",
+        "term": "ゆ",
+        "def": "yu"
+    },
+    {
+        "char_id": "yo",
+        "term": "よ",
+        "def": "yo"
+    },
+    {
         "char_id": "wa",
         "term": "わ",
         "def": "wa"
-    },
-    {
-        "char_id": "wi",
-        "term": "ゐ",
-        "def": "wi"
-    },
-    {
-        "char_id": "we",
-        "term": "ゑ",
-        "def": "we"
-    },
-    {
-        "char_id": "wo",
+    }, 
+    { 
+        "char_id": "o",
         "term": "を",
-        "def": "wo"
-    },
+        "def": "o" 
+    }, 
     {
         "char_id": "-n",
         "term": "ん",
@@ -739,4 +729,24 @@ const terms = [
         "term": "ぴょ",
         "def": "pyo"
     }
-] */
+];
+
+/* 
+,
+    {
+        "char_id": "wi",
+        "term": "ゐ",
+        "def": "wi"
+    },
+    {
+        "char_id": "we",
+        "term": "ゑ",
+        "def": "we"
+    },
+    {
+        "char_id": "wo",
+        "term": "を",
+        "def": "wo"
+    }
+
+*/
